@@ -1,0 +1,8 @@
+#!/bin/bash
+dconf write "/org/gnome/desktop/background/picture-uri" "'file:///home/vinay/Pictures/minion.jpg'"
+ps cax | grep firefox > /dev/null
+if [ $? -eq 0 ]; then
+	killall firefox
+fi
+firefox http://www.jango.com/music/Pharrell Williams/Happy &
+

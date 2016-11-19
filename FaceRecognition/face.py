@@ -17,6 +17,8 @@ _url = 'https://api.projectoxford.ai/emotion/v1.0/recognize'
 _key = '6f7ffca280934f8fbecc7df4a74e6556' #Here you have to paste your primary key
 _maxNumRetries = 10
 
+
+
 def processRequest( json, data, headers, params ):
 
     """
@@ -84,7 +86,7 @@ def renderResultOnImage( result, img ):
         cv2.putText( img, textToWrite, (faceRectangle['left'],faceRectangle['top']-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 1 )
 
 # Load raw image file into memory
-pathToFileInDisk = r'/Users/Sergio/Desktop/photo2.jpg'
+pathToFileInDisk = r'/home/vinay/Pictures/Webcam/2016-11-19-004247.jpg'
 with open( pathToFileInDisk, 'rb' ) as f:
     data = f.read()
 
@@ -99,21 +101,19 @@ result = processRequest( json, data, headers, params )
 
 if result is not None:
     # Load the original image from disk
-    data8uint = np.fromstring( data, np.uint8 ) # Convert string to an unsigned int array
-    img = cv2.cvtColor( cv2.imdecode( data8uint, cv2.IMREAD_COLOR ), cv2.COLOR_BGR2RGB )
-
-    renderResultOnImage( result, img )
-
-    i = 0
-    for currFace in result:
-        myVar = "%s" % ( max(currFace['scores'].items(), key=operator.itemgetter(1))[0] )
-        if i == 0: 
-            name = "Sergio" 
-        else: 
-            name = "Philipp"
-        print("%s seems to be experiencing %s" % (name, myVar))
-        print(currFace)
-        i += 1
-
-    ig, ax = plt.subplots(figsize=(15, 20))
-    ax.imshow( img )
+	data8uint = np.fromstring( data, np.uint8 ) # Convert string to an unsigned int array
+	img = cv2.cvtColor( cv2.imdecode( data8uint, cv2.IMREAD_COLOR ), cv2.COLOR_BGR2RGB )
+	renderResultOnImage( result, img )
+	i = 0
+	for currFace in result:
+		myVar = "%s" % ( max(currFace['scores'].items(), key=operator.itemgetter(1))[0] )
+		if i == 0: 
+			name = "Sergio" 
+			print(name, myVar)
+			fwd=open("dataset.txt",'a')
+			fwd.write(myVar)
+			fwd.write("\n")
+        ##print(currFace)
+			i += 1
+	ig, ax = plt.subplots(figsize=(15, 20))
+	ax.imshow( img )
